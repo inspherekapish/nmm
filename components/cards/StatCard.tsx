@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { DivideIcon as LucideIcon } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
   title: string;
@@ -43,11 +43,10 @@ export const StatCard: React.FC<StatCardProps> = ({
             <p className="text-2xl font-semibold text-gray-900 dark:text-white">{value}</p>
             {trend && (
               <span
-                className={`ml-2 text-sm font-medium ${
-                  trend.isPositive
+                className={`ml-2 text-sm font-medium ${trend.isPositive
                     ? 'text-green-600 dark:text-green-400'
                     : 'text-red-600 dark:text-red-400'
-                }`}
+                  }`}
               >
                 {trend.isPositive ? '+' : ''}{trend.value}%
               </span>

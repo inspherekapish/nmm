@@ -10,10 +10,10 @@ import { FileUpload } from '@/components/forms/FileUpload';
 import { getDashboardStats, createSession } from '@/lib/mockApi';
 import { Session } from '@/lib/types';
 import { MENTORING_AREAS, LANGUAGES } from '@/lib/constants';
-import { 
-  Users, 
-  Calendar, 
-  Star, 
+import {
+  Users,
+  Calendar,
+  Star,
   Clock,
   Plus,
   Upload,
@@ -58,14 +58,15 @@ export default function MentorDashboard() {
   const handleCreateSession = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsCreatingSession(true);
-    
+
     try {
       await createSession({
         ...sessionForm,
         mentorId: user!.id,
-        mentorName: user!.name
+        mentorName: user!.name,
+        resources: []
       });
-      
+
       // Reset form and close modal
       setSessionForm({
         title: '',
@@ -76,7 +77,7 @@ export default function MentorDashboard() {
         resources: []
       });
       setShowCreateSession(false);
-      
+
       // Reload dashboard data
       await loadDashboardData();
     } catch (error) {
@@ -205,7 +206,7 @@ export default function MentorDashboard() {
               {t('dashboard.quickActions')}
             </h3>
             <div className="space-y-3">
-              <button 
+              <button
                 onClick={() => setShowCreateSession(true)}
                 className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors flex items-center"
               >
@@ -242,11 +243,10 @@ export default function MentorDashboard() {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${
-                            i < feedback.rating
+                          className={`h-4 w-4 ${i < feedback.rating
                               ? 'text-yellow-400 fill-current'
                               : 'text-gray-300 dark:text-gray-600'
-                          }`}
+                            }`}
                         />
                       ))}
                     </div>
@@ -311,7 +311,7 @@ export default function MentorDashboard() {
                 <X className="h-6 w-6" />
               </button>
             </div>
-            
+
             <form onSubmit={handleCreateSession} className="p-6 space-y-6">
               <Input
                 label="Session Title"
@@ -320,7 +320,7 @@ export default function MentorDashboard() {
                 placeholder="Enter session title"
                 required
               />
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Description
@@ -334,7 +334,7 @@ export default function MentorDashboard() {
                   required
                 />
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Select
                   label="Mentoring Area"
@@ -344,7 +344,7 @@ export default function MentorDashboard() {
                   placeholder="Select area"
                   required
                 />
-                
+
                 <Select
                   label="Language"
                   options={languageOptions}
@@ -353,7 +353,7 @@ export default function MentorDashboard() {
                   required
                 />
               </div>
-              
+
               <Input
                 label="Date & Time"
                 type="datetime-local"
@@ -361,7 +361,7 @@ export default function MentorDashboard() {
                 onChange={(e) => setSessionForm({ ...sessionForm, dateTime: e.target.value })}
                 required
               />
-              
+
               <FileUpload
                 label="Session Resources (Optional)"
                 accept=".pdf,.ppt,.pptx,.doc,.docx,.mp4,.avi,.mov"
@@ -371,7 +371,7 @@ export default function MentorDashboard() {
                 value={sessionForm.resources}
                 hint="Upload materials that will help during the session"
               />
-              
+
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
